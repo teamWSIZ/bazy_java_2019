@@ -43,9 +43,12 @@ public class AppController {
 
     //R
     @GetMapping("/shippers")
-    public Iterable<Shipper> getAllShippers() {
-        return shipperRepo.findAll();
+    public Iterable<Shipper> getAllShippers(
+            @RequestParam(value = "prefix", defaultValue = "") String prefix) {
+        if (prefix.equals("")) return shipperRepo.findAll();
+        else return shipperRepo.getByShippernameStartingWith(prefix);
     }
+
 
     //U
 

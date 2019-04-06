@@ -11,3 +11,6 @@ alter table a.shippers alter column shipperid
 
 --wykorzystanie sequence "ręcznie"
 select nextval('shipperid_seq')
+
+-- założenie klucza podstawowego na kolumnę
+alter table a.shippers add primary key (shipperid);
