@@ -1,0 +1,13 @@
+--de-facto kopiowanie tabeli (tu: między różnymi schema'mi)
+create table a.shippers as (select * from xxx.shippers);
+
+--tworzenie sequence i ustalenie punktu startowego
+create sequence shipperid_seq;
+alter sequence shipperid_seq restart with 6;
+
+--podpięcie sequence'u by generowal id'ki (odpowiednik kolumny SERIAL)
+alter table a.shippers alter column shipperid
+    set default nextval('shipperid_seq');
+
+--wykorzystanie sequence "ręcznie"
+select nextval('shipperid_seq')
