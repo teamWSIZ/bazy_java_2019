@@ -6,14 +6,14 @@ import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
-//@Entity
-//@Data
-//@Table(name = "shippers")
-//@NoArgsConstructor
-//@AllArgsConstructor
+@Entity
+@Table(name = "shippers")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Shipper {
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer shipperid;
     String shippername;
     String phone;
