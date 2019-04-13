@@ -2,14 +2,8 @@ package wsi.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import wsi.model.Employee;
-import wsi.model.Message;
-import wsi.model.Order;
-import wsi.model.Shipper;
-import wsi.service.EmployeeRepo;
-import wsi.service.MessageRepo;
-import wsi.service.OrderRepo;
-import wsi.service.ShipperRepo;
+import wsi.model.*;
+import wsi.service.*;
 
 /**
  * Projektowanie API:
@@ -23,6 +17,7 @@ public class AppController {
     @Autowired ShipperRepo shipperRepo;
     @Autowired EmployeeRepo employeeRepo;
     @Autowired OrderRepo orderRepo;
+    @Autowired CustomerRepo customerRepo;
 
     @GetMapping(value = "/status")
     public String showStatus() {
@@ -70,11 +65,25 @@ public class AppController {
 
     //dodac metode "getAllCustomers"
 
+    @GetMapping("/customers")
+    public Iterable<Customer> getAllCustomers() {
+        return customerRepo.findAll();
+    }
+
 
     //// Orders
     @GetMapping("/customers/{customerid}/orders")
     public Iterable<Order> getOrdersOfCustomer(@PathVariable(value = "customerid") Integer customerid) {
         return orderRepo.getByCustomerid(customerid);
+    }
+
+
+    //// Countries
+
+    @GetMapping("/countries/{countryprefix}/customers")
+    public Iterable<Customer> getCustomersByCountry(
+            @PathVariable(value = "countryprefix") String countryPrefix) {
+        return customerRepo.getByCountryStartingWith(countryPrefix);
     }
 
 }
