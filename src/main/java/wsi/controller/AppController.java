@@ -4,9 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import wsi.model.Employee;
 import wsi.model.Message;
+import wsi.model.Order;
 import wsi.model.Shipper;
 import wsi.service.EmployeeRepo;
 import wsi.service.MessageRepo;
+import wsi.service.OrderRepo;
 import wsi.service.ShipperRepo;
 
 /**
@@ -20,6 +22,7 @@ public class AppController {
     @Autowired MessageRepo messageRepo;
     @Autowired ShipperRepo shipperRepo;
     @Autowired EmployeeRepo employeeRepo;
+    @Autowired OrderRepo orderRepo;
 
     @GetMapping(value = "/status")
     public String showStatus() {
@@ -66,5 +69,12 @@ public class AppController {
     //// Customers
 
     //dodac metode "getAllCustomers"
+
+
+    //// Orders
+    @GetMapping("/customers/{customerid}/orders")
+    public Iterable<Order> getOrdersOfCustomer(@PathVariable(value = "customerid") Integer customerid) {
+        return orderRepo.getByCustomerid(customerid);
+    }
 
 }
