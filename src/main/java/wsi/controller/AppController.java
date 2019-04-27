@@ -50,7 +50,12 @@ public class AppController {
         else return shipperRepo.getByShippernameStartingWith(prefix);
     }
 
+
+
     //U
+    void saveShipper(Shipper s) {
+        shipperRepo.save(s);
+    }
 
     //D
 
