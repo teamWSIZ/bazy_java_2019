@@ -19,7 +19,3 @@ champions (
 - dodać kilku championów na podstawie https://na.op.gg/champion/statistics , korzystając z
   zapytań obsługiwanych przez naszą apkę w nodejs (i postman'a)
 
-
-
-
-

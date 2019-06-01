@@ -5,6 +5,9 @@ import org.springframework.web.bind.annotation.*;
 import wsi.model.*;
 import wsi.service.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Projektowanie API:
  * https://pages.apigee.com/rs/apigee/images/api-design-ebook-2012-03.pdf
@@ -18,6 +21,7 @@ public class AppController {
     @Autowired EmployeeRepo employeeRepo;
     @Autowired OrderRepo orderRepo;
     @Autowired CustomerRepo customerRepo;
+    @Autowired OrderService orderService;
 
     @GetMapping(value = "/status")
     public String showStatus() {
@@ -80,6 +84,13 @@ public class AppController {
     @GetMapping("/customers/{customerid}/orders")
     public Iterable<Order> getOrdersOfCustomer(@PathVariable(value = "customerid") Integer customerid) {
         return orderRepo.getByCustomerid(customerid);
+    }
+
+    @GetMapping("/orders/extended")
+    public Iterable<OrderExpanded> getExtendedOrders(@RequestBody List<Integer> orderIds) {
+        List<OrderExpanded> res = new ArrayList<>();
+        orderIds.forEach(id -> res.add(orderService.resolveDetails(id)));
+        return res;
     }
 
 
