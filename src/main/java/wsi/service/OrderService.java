@@ -15,9 +15,10 @@ public class OrderService {
 
 
     public OrderExpanded resolveDetails(Integer orderid) {
-        Order order = orderRepo.findOne(orderid);
-        Customer customer = customerRepo.findOne(order.getCustomerid());
-        Employee employee = employeeRepo.findOne(order.getEmployeeid());
+        //Uwaga: w nowym JPA nie ma .findOne, tylko .findById zwracajace "Optional"
+        Order order = orderRepo.findById(orderid).get();
+        Customer customer = customerRepo.findById(order.getCustomerid()).get();
+        Employee employee = employeeRepo.findById(order.getEmployeeid()).get();
 
         Double total = 0.;
         //teraz policzyc total...
