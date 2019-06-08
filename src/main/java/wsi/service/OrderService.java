@@ -2,10 +2,7 @@ package wsi.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import wsi.model.Customer;
-import wsi.model.Employee;
-import wsi.model.Order;
-import wsi.model.OrderExpanded;
+import wsi.model.*;
 
 @Service
 public class OrderService {
@@ -13,6 +10,7 @@ public class OrderService {
     @Autowired CustomerRepo customerRepo;
     @Autowired EmployeeRepo employeeRepo;
     @Autowired OrderDetailRepo orderDetailRepo;
+    @Autowired ProductRepo productRepo;
 
 
     public OrderExpanded resolveDetails(Integer orderid) {
@@ -27,18 +25,17 @@ public class OrderService {
         //2) dla każdego, wziąć productid, i sprawdzić w repo jaki jest jego koszt jednostkowy
         //3) do sumy dodać orederDetail.quantity * product.price
 
-        orderDetailRepo.getByOrderid(orderid).forEach(orderDetail -> {
-            int productId = orderDetail.getProductid();
 
-        });
+        for(OrderDetail detail : orderDetailRepo.getByOrderid(orderid)){
+            int productId = detail.getProductid();
+            total += productRepo.findById(productId).get().getPrice() * detail.getQuantity();
+        }
 
         OrderExpanded expanded = new OrderExpanded(
                 order,
                 customer.getCustomername(),
                 employee.getLastname(),
                 total);
-
-
         return expanded;
     }
 

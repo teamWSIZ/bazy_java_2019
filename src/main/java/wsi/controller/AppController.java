@@ -22,6 +22,7 @@ public class AppController {
     @Autowired OrderRepo orderRepo;
     @Autowired CustomerRepo customerRepo;
     @Autowired OrderService orderService;
+    @Autowired ProductRepo productRepo;
 
     @GetMapping(value = "/status")
     public String showStatus() {
@@ -41,6 +42,12 @@ public class AppController {
          * {"id":1,"title":"genesis","body":"lorem ipsum dolor sit amet"}
          */
         return messageRepo.save(message);
+    }
+
+    //Products
+    @GetMapping(value = "/products")
+    public Iterable<Product> getProducts() {
+        return productRepo.findAll();
     }
 
     //// Shippers
@@ -85,6 +92,12 @@ public class AppController {
     public Iterable<Order> getOrdersOfCustomer(@PathVariable(value = "customerid") Integer customerid) {
         return orderRepo.getByCustomerid(customerid);
     }
+
+    @GetMapping("/orders/extended/{orderid}")
+    public OrderExpanded getExtended(@PathVariable(value = "orderid") Integer orderid) {
+        return orderService.resolveDetails(orderid);
+    }
+
 
     @GetMapping("/orders/extended")
     public Iterable<OrderExpanded> getExtendedOrders(@RequestBody List<Integer> orderIds) {
