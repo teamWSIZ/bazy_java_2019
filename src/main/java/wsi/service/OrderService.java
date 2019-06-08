@@ -12,6 +12,7 @@ public class OrderService {
     @Autowired OrderRepo orderRepo;
     @Autowired CustomerRepo customerRepo;
     @Autowired EmployeeRepo employeeRepo;
+    @Autowired OrderDetailRepo orderDetailRepo;
 
 
     public OrderExpanded resolveDetails(Integer orderid) {
@@ -25,6 +26,11 @@ public class OrderService {
         //1) wyciagnać liste (iterable) wszystkich orderDetail
         //2) dla każdego, wziąć productid, i sprawdzić w repo jaki jest jego koszt jednostkowy
         //3) do sumy dodać orederDetail.quantity * product.price
+
+        orderDetailRepo.getByOrderid(orderid).forEach(orderDetail -> {
+            int productId = orderDetail.getProductid();
+
+        });
 
         OrderExpanded expanded = new OrderExpanded(
                 order,
