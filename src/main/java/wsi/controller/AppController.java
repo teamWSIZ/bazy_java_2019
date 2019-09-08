@@ -1,6 +1,8 @@
 package wsi.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.web.bind.annotation.*;
 import wsi.model.*;
 import wsi.service.*;
@@ -15,6 +17,7 @@ import java.util.List;
 
 @RestController
 @CrossOrigin
+@Slf4j
 public class AppController {
     @Autowired MessageRepo messageRepo;
     @Autowired ShipperRepo shipperRepo;
@@ -23,15 +26,34 @@ public class AppController {
     @Autowired CustomerRepo customerRepo;
     @Autowired OrderService orderService;
     @Autowired ProductRepo productRepo;
+    @Autowired FakeUserRepo fakeUserRepo;
+
+    @Autowired
+    JdbcTemplate jdbcTemplate;
 
     @GetMapping(value = "/status")
     public String showStatus() {
         return "App running OK";
     }
 
+
+    @GetMapping(value = "/batch")
+    public String batchInsert(@RequestParam(value = "count") Integer count) {
+        List<FakeUser> users = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            users.add(FakerTutorial.fakeUser());
+        }
+        log.info("Saving {} users", users.size());
+        fakeUserRepo.saveAll(users);
+        log.info("Save complete");
+
+        return "OK";
+    }
+
     //Messages
     @GetMapping(value = "/msgs")
     public Iterable<Message> getMessages() {
+
         return messageRepo.findAll();
     }
 
@@ -41,8 +63,10 @@ public class AppController {
          * Dostajemy JSON:
          * {"id":1,"title":"genesis","body":"lorem ipsum dolor sit amet"}
          */
+
         return messageRepo.save(message);
     }
+
 
     //Products
     @GetMapping(value = "/products")
